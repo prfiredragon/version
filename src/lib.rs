@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 use std::fmt;
 use std::fmt::Display;
 use std::str::FromStr;
@@ -84,6 +85,7 @@ pub enum Cmp {
     /// When version `A` is greater than `B` but not equal.
     Gt,
 }
+use Cmp::*;
 
 pub fn compare_version(_a: &str, test: Cmp, _b: &str) -> bool{
     match test {
@@ -139,27 +141,27 @@ fn equal_test() {
 }
 #[test]
 fn test_eq() {
-    assert!(compare_version("0.1.0",Cmp::Eq, "0.1.0"));
+    assert!(compare_version("0.1.0",Eq, "0.1.0"));
 }
 #[test]
 fn test_ge() {
-    assert!(compare_version("0.1.1",Cmp::Ge, "0.1.0"));
+    assert!(compare_version("0.1.1",Ge, "0.1.0"));
 }
 #[test]
 fn test_le() {
-    assert!(compare_version("0.0.9",Cmp::Le, "0.1.0"));
+    assert!(compare_version("0.0.9",Le, "0.1.0"));
 }
 #[test]
 fn test_ne() {
-    assert!(compare_version("1.0.0",Cmp::Ne, "0.1.0"));
+    assert!(compare_version("1.0.0",Ne, "0.1.0"));
 }
 #[test]
 fn test_lt() {
-    assert!(compare_version("0.0.9",Cmp::Lt, "0.1.0"));
+    assert!(compare_version("0.0.9",Lt, "0.1.0"));
 }
 #[test]
 fn test_gt() {
-    assert!(compare_version("0.1.9",Cmp::Gt, "0.1.0"));
+    assert!(compare_version("0.1.9",Gt, "0.1.0"));
 }
 
 #[test]
