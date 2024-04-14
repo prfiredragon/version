@@ -20,11 +20,35 @@ impl FromStr for Version {
   type Err = String;
 
   fn from_str( s : &str ) -> Result<Version, Self::Err> {
-    let parts : Vec<Result<u32, &str>> =
+    let strings = "0.0.0";
+    let mut parts: Vec<Result<u32, &str>> = 
+    strings.split( '.' )
+    .map( | elm | elm.parse::<u32>()
+                           .map_err( |_| elm ) )
+    .collect();
+
+    //println!("Results: {:?}", parts);
+    let partst : Vec<Result<u32, &str>> =
       s.split( '.' )
       .map( | elm | elm.parse::<u32>()
                              .map_err( |_| elm ) )
       .collect();
+
+    if partst.len() == 1 {
+      let parta: Result<u32, &str> = partst[0];
+      let partb: Result<u32, &str> = parts[1];
+      let partc: Result<u32, &str> = parts[2];
+      let parthole: Vec<Result<u32, &str>> = vec![parta, partb, partc];
+      parts = parthole;
+    }else if partst.len() == 2 {
+      let parta: Result<u32, &str> = partst[0];
+      let partb: Result<u32, &str> = partst[1];
+      let partc: Result<u32, &str> = parts[2];
+      let parthole: Vec<Result<u32, &str>> = vec![parta, partb, partc];
+      parts = parthole;
+    }else{
+      parts = partst;
+    }
 
     if parts.len() != 3 {
       return
@@ -163,7 +187,11 @@ fn test_lt() {
 fn test_gt() {
     assert!(compare_version("0.1.9",Gt, "0.1.0"));
 }
-
+#[test]
+fn test_gt2() {
+    assert!(compare_version("0.6",Gt, "0.1"));
+}
+/*
 #[test]
 fn does_it_work() {
   let ver = FromStr::from_str( &version!() );
@@ -178,4 +206,27 @@ fn does_it_work() {
 
   // Bad test is bad.
   assert_eq!( version!(), "2.0.1" );
+}
+*/
+#[test]
+fn two_digit_test() {
+  let invv : Result<Version, String> = FromStr::from_str( "7.2" );
+  assert!( invv.is_ok() );
+
+  let ver = FromStr::from_str( "7.2" );
+  assert_eq!( ver, Ok( Version { major: 7, minor: 2, patch: 0 } ) );
+  println!("Results: {:?}", ver);
+  //println!("{}",invv.unwrap_err());
+  
+}
+#[test]
+fn one_digit_test() {
+  let invv : Result<Version, String> = FromStr::from_str( "7" );
+  assert!( invv.is_ok() );
+
+  let ver = FromStr::from_str( "7" );
+  assert_eq!( ver, Ok( Version { major: 7, minor: 0, patch: 0 } ) );
+  println!("Results: {:?}", ver);
+  //println!("{}",invv.unwrap_err());
+  
 }
