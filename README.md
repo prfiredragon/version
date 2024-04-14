@@ -6,7 +6,7 @@
 #[macro_use]
 extern crate version;
 
-use version::{compare_version::{self, *}, Version, Cmp::*};
+use version::{compare_version::*, Version, Cmp::*};
 
 // ...
 
@@ -16,10 +16,12 @@ let ver : Version = FromStr::from_str( version!() ).unwrap();
 
 ```
 
-// ...
 
+## Usage:
+```rust
 use version::{compare_version::*, Version, Cmp::*};
 
+// ...
 
 #[test]
 fn one_digit_test() {
