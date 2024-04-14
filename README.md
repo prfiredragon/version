@@ -6,7 +6,7 @@
 #[macro_use]
 extern crate version;
 
-use version::{compare_version::*, Version, Cmp::*};
+use version::Version;
 
 // ...
 
