@@ -81,7 +81,8 @@ macro_rules! version(
 );
 
 
-
+//Cmp enum is from https://github.com/timvisee/version-compare/
+//All the credit for the Cmp enum is for timvisee
 /// Comparison operators enum.
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum Cmp {
