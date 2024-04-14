@@ -111,8 +111,11 @@ pub enum Cmp {
     Gt,
 }
 use Cmp::*;
-
-pub fn compare_version(_a: &str, test: Cmp, _b: &str) -> bool{
+pub mod compare_version {
+  #![allow(unused_imports, dead_code)]
+use crate::Cmp;
+use crate::Version;
+pub fn from_str(_a: &str, test: Cmp, _b: &str) -> bool{
     match test {
         Cmp::Eq => {if _a == _b {return true;}},
         Cmp::Ne => {if _a != _b {return true;}},
@@ -122,6 +125,23 @@ pub fn compare_version(_a: &str, test: Cmp, _b: &str) -> bool{
         Cmp::Gt => {if _a > _b {return true;}},
     }
     return false;
+}
+pub fn from_version(_a: &Version, test: Cmp, _b: &Version) -> bool{
+  let ta = _a.to_string();
+  let ta2 = ta.as_str();
+  let tb = _b.to_string();
+  let tb2 = tb.as_str();
+  match test {
+      Cmp::Eq => {if ta2 == tb2 {return true;}},
+      Cmp::Ne => {if ta2 != tb2 {return true;}},
+      Cmp::Lt => {if ta2 < tb2 {return true;}},
+      Cmp::Le => {if ta2 <= tb2 {return true;}},
+      Cmp::Ge => {if ta2 >= tb2 {return true;}},
+      Cmp::Gt => {if ta2 > tb2 {return true;}},
+  }
+  return false;
+}
+
 }
 
 #[test]
@@ -166,31 +186,31 @@ fn equal_test() {
 }
 #[test]
 fn test_eq() {
-    assert!(compare_version("0.1.0",Eq, "0.1.0"));
+    assert!(compare_version::from_str("0.1.0",Eq, "0.1.0"));
 }
 #[test]
 fn test_ge() {
-    assert!(compare_version("0.1.1",Ge, "0.1.0"));
+    assert!(compare_version::from_str("0.1.1",Ge, "0.1.0"));
 }
 #[test]
 fn test_le() {
-    assert!(compare_version("0.0.9",Le, "0.1.0"));
+    assert!(compare_version::from_str("0.0.9",Le, "0.1.0"));
 }
 #[test]
 fn test_ne() {
-    assert!(compare_version("1.0.0",Ne, "0.1.0"));
+    assert!(compare_version::from_str("1.0.0",Ne, "0.1.0"));
 }
 #[test]
 fn test_lt() {
-    assert!(compare_version("0.0.9",Lt, "0.1.0"));
+    assert!(compare_version::from_str("0.0.9",Lt, "0.1.0"));
 }
 #[test]
 fn test_gt() {
-    assert!(compare_version("0.1.9",Gt, "0.1.0"));
+    assert!(compare_version::from_str("0.1.9",Gt, "0.1.0"));
 }
 #[test]
-fn test_gt2() {
-    assert!(compare_version("0.6",Gt, "0.1"));
+fn test_gt_two_poss() {
+    assert!(compare_version::from_str("0.6",Gt, "0.1"));
 }
 /*
 #[test]
@@ -217,7 +237,6 @@ fn two_digit_test() {
   let ver = FromStr::from_str( "7.2" );
   assert_eq!( ver, Ok( Version { major: 7, minor: 2, patch: 0 } ) );
   println!("Results: {:?}", ver);
-  //println!("{}",invv.unwrap_err());
   
 }
 #[test]
@@ -228,6 +247,15 @@ fn one_digit_test() {
   let ver = FromStr::from_str( "7" );
   assert_eq!( ver, Ok( Version { major: 7, minor: 0, patch: 0 } ) );
   println!("Results: {:?}", ver);
-  //println!("{}",invv.unwrap_err());
   
+}
+#[test]
+fn test_gt_two_poss_version() {
+
+  let a: Version  = FromStr::from_str("0.6").unwrap();
+  let b: Version  = FromStr::from_str("0.1").unwrap();
+  println!("{:?}", a);
+  println!("{:?}", b);
+  
+    assert!(compare_version::from_version(&a,Gt, &b));
 }
