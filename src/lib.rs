@@ -147,16 +147,16 @@ pub fn from_version(_a: &Version, test: Cmp, _b: &Version) -> bool{
 #[test]
 fn string_test() {
   // Bad test is bad.
-  assert_eq!( version!(), "3.0.0" );
+  assert_eq!( version!(), "3.3.0" );
 }
 #[test]
 fn version_struct_test() {
     let ver = FromStr::from_str( &version!() );
-  assert_eq!( ver, Ok( Version { major: 3, minor: 0, patch: 0 } ) );
+  assert_eq!( ver, Ok( Version { major: 3, minor: 3, patch: 0 } ) );
 }
 #[test]
 fn invalid_test() {
-    let invalids = [ "nope", "1.0", "1.0.x", "1.x.0", "x.0.1", "x.x.x" ];
+    let invalids = [ "nope", "x.0", "1.0.x", "1.x.0", "x.0.1", "x.x.x" ];
 
   for invalid in &invalids {
     let invv : Result<Version, String> = FromStr::from_str( invalid );
@@ -173,14 +173,14 @@ fn mayor_test() {
 #[test]
 fn minor_test() {
     let mut test_ret = false;
-    if version!() < "3.0.1" {test_ret = true;}
+    if version!() < "3.3.1" {test_ret = true;}
 
     assert_eq!( true, test_ret );
 }
 #[test]
 fn equal_test() {
     let mut test_ret = false;
-    if version!() == "3.0.0" {test_ret = true;}
+    if version!() == "3.3.0" {test_ret = true;}
 
     assert_eq!( true, test_ret );
 }
