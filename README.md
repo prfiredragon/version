@@ -1,3 +1,5 @@
+[![Rust](https://github.com/prfiredragon/version/actions/workflows/rust.yml/badge.svg)](https://github.com/prfiredragon/version/actions/workflows/rust.yml)
+
 # version
 `version` is a very simple library who's job is to return the version of your crate if you're building with Cargo.
 
